@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+
+% References:-
+% https://www.overleaf.com/learn/latex/Inserting_Images
+% https://www.overleaf.com/learn/latex/Bibliography_management_with_bibtex
+
+% geometry package is used to set page and margin size.
+\usepackage[a4paper, margin=2cm]{geometry}
+
+% graphicx package is required for inserting images.
+\usepackage{graphicx}
+
+\title{CSE300 LaTeX Lecture-2}
+\author{Ajmain Yasar Ahmed Sahil}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    \listoffigures
+    
+    % \pagebreak is used to move the following contents to next page.
+    \pagebreak
+    
+    \section*{Inserting Images in \LaTeX}
+    You can see below the logo of CSE, BUET.
+    
+    \includegraphics[]{Images/CSE_BUET.png}
+    
+    You can see below the logo of CSE, BUET (but $50\%$ downscaled).
+    
+    \includegraphics[scale=0.5]{Images/CSE_BUET.png}
+    
+    \pagebreak
+    
+    You can see below the logo of CSE, BUET (but rotated $90^{\circ}$ counter-clockwise).
+    
+    \includegraphics[angle=90]{Images/CSE_BUET.png}
+    
+    You can see below the logo of CSE, BUET (but $20\%$ downscaled and rotated $45^{\circ}$ clockwise).
+    
+    \includegraphics[scale=0.8, angle=-45]{Images/CSE_BUET.png}
+    
+    \pagebreak
+    
+    You can see below the logo of CSE, BUET (but adjusted to text width and $25\%$ downscaled).
+    
+    \includegraphics[width=0.75\textwidth]{Images/CSE_BUET.png}
+    
+    You can see below the logo of CSE, BUET (using \textit{figure} environment, image is by default left-aligned).
+    
+    \begin{figure}[h]
+        \includegraphics[]{Images/CSE_BUET.png}
+    \end{figure}
+    
+    You can see below the logo of CSE, BUET (using \textit{figure} environment and center-aligning the image).
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[]{Images/CSE_BUET.png}
+    \end{figure}
+    
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c c}
+             \includegraphics[scale=0.6]{Images/Albert_Einstein.png} & \includegraphics[scale=0.6]{Images/Fruits.png} \\
+             \textbf{(a)} Albert Einstein (famous for $E = mc^2$) & \textbf{(b)} Fruits
+        \end{tabular}
+    \end{table}
+    
+    \pagebreak
+    
+    \begin{figure}
+        \centering
+        \includegraphics[]{Images/Level3_Term1.png}
+        \caption{A graphical depiction of a typical day in the life of L3/T1 students in CSE, BUET.}
+        \label{fig:l3t1}
+    \end{figure}
+    
+    See Figure \ref{fig:l3t1}.
+    
+    \section*{Bibliography Management with BibTeX}
+    Compiler is one of the best inventions of mankind \cite{dragonbook}. \\
+    
+    Learning MIPS architecture is fun \cite{mips}. \\
+    
+    \noindent I am not a robot \cite{turing2009computing}.
+    
+    \bibliographystyle{plain}
+    \bibliography{reference}
+\end{document}

@@ -1,0 +1,6 @@
+Line# 8: Syntax error at expression of expression statement
+Line# 10: Syntax error at expression of expression statement
+Line# 12: Syntax error at expression of expression statement
+Line# 14: Syntax error at expression of expression statement
+Line# 16: Syntax error at expression of expression statement
+Line# 18: Syntax error at expression of expression statement

@@ -1,0 +1,36 @@
+8 12 9 13
+Mis Flo 30
+Vir Njy 50
+Mis Cal 30
+Cal Iow 90
+Vir Flo 80
+Njy Rho 40
+Con Flo 10
+Vir Mis 10
+Mis Iow 50
+Cal Vir 20
+Con Iow 30
+Vir Rho 40
+Fl Ar 40
+Ox Na 10
+Ar Ox 30
+Io Li 50
+Cl He 20
+Fl Ox 80
+Na He 60
+Ar Na 100
+Ox Li 80
+Cl Na 50
+Ar Br 10
+Io He 20
+Li Na 30
+3
+Njy 50
+Iow 70
+Flo 20
+4
+Fl 10
+Cl 30
+Br 20
+Io 40
+Cal Na

@@ -1,0 +1,137 @@
+\documentclass[14pt]{article}
+
+\title{Introduction to Latex}
+\author{Md. Emamul Haque}
+\date{\today}
+
+\usepackage{multicol}
+\usepackage{multirow}
+
+\begin{document}
+    \maketitle
+    \tableofcontents
+
+    \pagebreak
+    
+    \section{Introduction}
+    This is the introduction part of the document. \textbf{This text will appear in bold format.}
+
+    \subsection{Section 1.1}
+    This is section 1.1. \textit{This text will appear in italic format.\emph{Emphasis on this text}. This is again in italic}
+
+    \subsubsection{Section 1.1.1}
+    A section with another section. \underline{Underlined text.}
+
+    \subsection{Section 1.2}
+    Yet another subsection. \Large{Large Text}. {\huge Huge text}
+
+    \section{Section 2}
+    This is the second section. \emph{This text is within the emphasis tags.}
+
+    \section*{Unlisted Section}
+    This section will not show up in the table of contents.
+
+    \section{List}
+    In this section, we shall demonstrate ordered and unordered lists.
+
+    \subsection{Unordered List}
+
+    \begin{itemize}
+        \item First item
+        \item Second item
+        \item Third item
+        \begin{itemize}
+            \item Nested item 1
+            \item Nested item 2
+        \end{itemize}
+    \end{itemize}
+
+    \subsection{Ordered List}
+
+    \begin{enumerate}
+        \item Item 1
+        \item Item 2
+        \begin{itemize}
+            \item Nested Item A
+            \item Nested Item B
+        \end{itemize}
+        \item Item 3
+    \end{enumerate}
+
+    \subsection{Descriptive List}
+
+    \begin{description}
+        \item[Description 1] Description
+        \item[Description 2] Description
+    \end{description}
+
+    \section{Tables}
+
+    \subsection{Basic Tables}
+
+    \begin{tabular} {| c c c |}
+        \hline
+        cell1 & cell2 & cell3 \\
+        \hline
+        \hline
+        cell4 & cell5 & cell6 \\
+        \hline
+        cell7 & cell8 & cell9 \\
+        \hline
+    \end{tabular}
+
+    \subsection{Multi-column Table}
+
+    \begin{tabular}{|c | c c |}
+        \hline
+        cell1 & cell2 & cell3 \\
+        \cline{1-3}
+        1 & \multicolumn{2}{c |}{Text} \\
+        2 & 3 & 4 \\
+        \hline
+    \end{tabular}
+
+    \subsection{Multi-row Table}
+
+    \begin{tabular}{| c | c | c |}
+         \hline
+         cell1 & cell2 & cell3 \\
+         \hline
+         \multirow{2}{*}{Merged} & cell4 & cell5 \\
+         & cell6 & cell7 \\
+         \hline
+    \end{tabular}
+
+    \subsection{Multi-row and Multi-column Table}
+
+    \begin{tabular}{| c | c | c | c |}
+        \hline
+        1 & 2 & 3 & 4 \\
+        \cline{1-3}
+        5 & 6 & 7 & 8 \\
+        \hline
+        \multicolumn{3}{|c|}{Merged} & 9 \\
+        \hline
+        \multirow{2}{*}{Rows} & 0 & 1 & 2 \\
+        \cline{2-4}
+        & 3 & 5 & 7 \\
+        \hline
+        \multicolumn{3}{|c|}{\multirow{2}{*}{Text}} & 8 \\
+        \multicolumn{3}{|c|}{} & 7 \\
+        \hline
+    \end{tabular}
+
+    \section{Math Environment}
+    This is another equation:$$ E = mc^2 $$
+    \begin{equation}
+        E = mc^2
+    \end{equation}
+
+    \begin{equation}
+        e^{\frac{a^b}{c_d}}
+    \end{equation}
+
+    Fractions:
+    $\left(\frac{\frac{c}{d}}{\frac{a}{b}}\right)$
+
+\end{document}

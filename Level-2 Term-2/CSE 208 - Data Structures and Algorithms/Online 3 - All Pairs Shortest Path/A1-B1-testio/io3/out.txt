@@ -1,0 +1,12 @@
+
+Shortest Path Weight: 14
+Path: 3 --> 2 --> 5
+
+Shortest Path Weight: 15
+Path: 2 --> 5 --> 2 --> 4
+
+Shortest Path Weight: 15
+Path: 4 --> 2 --> 5 --> 2
+
+Shortest Path Weight: 8
+Path: 4 --> 2 --> 5

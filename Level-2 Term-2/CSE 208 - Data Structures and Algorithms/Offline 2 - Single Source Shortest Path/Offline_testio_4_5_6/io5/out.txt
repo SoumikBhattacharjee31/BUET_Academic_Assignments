@@ -1,0 +1,6 @@
+Bellman Ford Algorithm: 
+Destination is unreachable from source
+
+Dijkstra Algorithm: 
+Destination is unreachable from source
+

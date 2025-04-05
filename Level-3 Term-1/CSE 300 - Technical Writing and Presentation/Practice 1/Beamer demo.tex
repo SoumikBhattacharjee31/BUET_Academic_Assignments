@@ -1,0 +1,104 @@
+\documentclass{beamer}
+
+\usepackage{graphicx}
+
+\usetheme{Madrid}
+
+\title{Intro to Beamer}
+\subtitle{This is a subtitle}
+\author[Pranta \and Sahil]
+{Md. Emamul Haque Pranta \and Ajmain Yasar Ahmed}
+\institute[CSE, BUET]
+{
+	Department of CSE\\
+	Bangladesh University of Engineering and Technology
+}
+\date{\today}
+
+\AtBeginSection
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
+\begin{document}
+	
+	\frame{\titlepage}
+	
+%	\begin{frame}
+%		\frametitle{Table of Contents}
+%		\tableofcontents
+%	\end{frame}
+	
+	\section{Text Section}
+		\begin{frame}
+			\frametitle{Frame Title}
+			This is a simple text.
+		\end{frame}
+
+	\section{Figure Section}
+		\begin{frame}{Figure}
+			\begin{figure}
+				\centering
+				\includegraphics[scale=0.4]{graph.png}
+				\caption{This is the image of a graph.}
+			\end{figure}
+		\end{frame}
+
+	\section{List Section}
+		\begin{frame}
+			\begin{itemize}
+				\item First
+				\item Second
+			\end{itemize}
+		\end{frame}
+	
+	\section{Text Effects}
+	\begin{frame}{Text Effects}
+		\begin{itemize}
+			\item <1-> This text will be visible from Slide 1
+			\item <2-> This text will be visible from Slide 2
+			\item <3-> This text will be visible from Slide 3
+			\item <4-> This text will be visible from Slide 4
+		\end{itemize}
+	\end{frame}
+
+	\section{Text Effects using pause}
+	\begin{frame}{Text Effects using pause}
+		This is the first text. \pause
+		This is the second text. \pause
+		The third text
+	\end{frame}
+
+	\section{Columns}
+		\begin{frame}{Demonstrating Columns}
+			\begin{columns}
+				\column[]{0.5\textwidth}
+					This is column 1.
+					$$ E = mc^2 $$
+				\column[]{0.5\textwidth}
+					\begin{enumerate}
+						\item First
+						\item Second
+					\end{enumerate}
+			\end{columns}
+		\end{frame}
+	
+	\section{Blocks}
+		\begin{frame}
+			\begin{block}{This is a block}
+				This is the body of the block.
+			\end{block}
+		
+			\begin{example}{This is an example block}
+				This is the body of the block.
+			\end{example}
+		
+			\begin{alertblock}{This is an alertblock}
+				This is the body of the block.
+			\end{alertblock}
+		\end{frame}
+	
+\end{document}

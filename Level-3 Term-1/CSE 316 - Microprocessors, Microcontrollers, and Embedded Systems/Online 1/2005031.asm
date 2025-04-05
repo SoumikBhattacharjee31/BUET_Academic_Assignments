@@ -1,0 +1,138 @@
+.MODEL LARGE
+.STACK 200H  
+.DATA
+    ;DIG DW 10, 20, 20, 30, 40, 50, 60, 70, 76, 80, 80, 100, 110, 120, 120, 120, 130
+    COND DB 0
+    NUM2 DW ?
+    NUM DW 0
+    NUM2 DW 0 
+.CODE
+MAIN PROC  
+    
+;INITIALIZE
+    MOV AX, @DATA
+    MOV DS, AX
+    
+    MOV BL, 0                 
+INPUT_NUM_1:
+    ;INPUT       
+    MOV AH, 1
+    INT 21H
+    ;CHECK NUM OR NOT
+    CMP AL, 30H
+    JB TAKEN INPUT
+    CMP AL, 39H
+    JA TAKEN INPUT
+    ;DIGIT
+    SUB AL, 30H
+    MOV CL, AL
+    MOV CH, 0
+    ;MULTIPLY
+    MOV AX, NUM
+    MOV BX, 0AH
+    MUL BX
+    ;ADD TO NUM
+    ADD AX, CX
+    MOV NUM, AX
+    JMP INPUT_NUM_1
+TAKEN INPUT:
+    MOV AX, NUM
+    MOV NUM1, AX
+    
+    
+                 
+INPUT_NUM_2:
+    ;INPUT       
+    MOV AH, 1
+    INT 21H
+    ;CHECK NUM OR NOT
+    CMP AL, 30H
+    JB TAKEN_INPUT2
+    CMP AL, 39H
+    JA TAKEN_INPUT2
+    ;DIGIT
+    SUB AL, 30H
+    MOV CL, AL
+    MOV CH, 0
+    ;MULTIPLY
+    MOV AX, NUM
+    MOV BX, 0AH
+    MUL BX
+    ;ADD TO NUM
+    ADD AX, CX
+    MOV NUM, AX
+    JMP INPUT_NUM_2
+TAKEN_INPUT2:
+    MOV AX, NUM
+    MOV NUM2, AX
+    
+    MOV NUM2, AX
+    MOV AX, NUM1
+    XCHG NUM1, AX
+    MOV NUM2, AX
+    CMP NUM1, AX
+    JE INPUT_NUM_2
+    CMP NUM1, AX
+    JG LESS
+    MOV COND, 1
+    JMP DONECOND
+LESS:
+    MOV COND, 2
+DONECOND:    
+    
+
+
+
+
+INPUT_NUM_3:
+    ;INPUT       
+    MOV AH, 1
+    INT 21H
+    ;CHECK NUM OR NOT
+    CMP AL, 30H
+    JB TAKEN_INPUT3
+    CMP AL, 39H
+    JA TAKEN_INPUT3
+    ;DIGIT
+    SUB AL, 30H
+    MOV CL, AL
+    MOV CH, 0
+    ;MULTIPLY
+    MOV AX, NUM
+    MOV BX, 0AH
+    MUL BX
+    ;ADD TO NUM
+    ADD AX, CX
+    MOV NUM, AX
+    JMP INPUT_NUM_3
+TAKEN_INPUT3:
+    MOV AX, NUM
+    MOV NUM1, AX    
+    
+    CMP COND, 0
+    JE ASC
+    CMP COND, 1 
+    JE DESC
+    CMP COND, 2
+    JE NOTS
+    
+ASC:
+    MOV AX, NUM
+    XCHG NUM2, AX
+    MOV NUM, AX
+    CMP AX, NUM2
+    JG INPUT_NUM_2
+    MOV COND, 
+DESC:
+NOTS:
+    
+   
+
+
+ENDHERE:
+    MOV AH, 4CH
+    INT 21H
+
+MAIN ENDP
+END MAIN
+        

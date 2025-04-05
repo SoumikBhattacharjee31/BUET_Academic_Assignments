@@ -1,0 +1,21 @@
+
+No path from 5 to 3 through the Wall Street
+
+Shortest Path Weight: 30
+Path: 8 --> 4 --> 5 --> 2 --> 6 --> 1
+
+Shortest Path Weight: 30
+Path: 1 --> 6 --> 2 --> 5 --> 4 --> 8
+
+No path from 3 to 4 through the Wall Street
+
+Shortest Path Weight: 7
+Path: 2 --> 6
+
+No path from 8 to 3 through the Wall Street
+
+Shortest Path Weight: 22
+Path: 7 --> 6 --> 2 --> 5
+
+Shortest Path Weight: 22
+Path: 5 --> 2 --> 6 --> 7

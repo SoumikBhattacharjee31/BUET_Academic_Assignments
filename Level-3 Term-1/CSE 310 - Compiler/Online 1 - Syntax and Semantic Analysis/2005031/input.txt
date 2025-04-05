@@ -1,0 +1,20 @@
+int foo(int x,int y,int z) {
+return x+y+z;
+}
+int main(){
+int a,b;
+switch (foo(1,2,3)) {
+case 1:
+a = 1;
+b = a+1;
+break;
+case 2:
+a = 2;
+b = a+3;
+break;
+default:
+a = 0;
+b = a;
+break;
+}
+}

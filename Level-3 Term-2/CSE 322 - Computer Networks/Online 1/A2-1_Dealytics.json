@@ -1,0 +1,2017 @@
+[
+    {
+        "usecase": {
+            "name": "Product Addition by Seller via UI or API",
+            "description": "Seller adds a new product through a detailed form in the Dealytics UI or api. Upon addition, backend services categorize, rate, and rank the product and notify subscribers if applicable.",
+            "actors": [
+                "Seller",
+                "Backend Notification System"
+            ],
+            "preconditions": "Seller is logged into the Dealytics dashboard; required fields in the product form are completed.",
+            "steps": [
+                "Seller navigates to the 'Add Product' section in the dashboard or API detects a product addition.",
+                "Seller completes the product form, including location, pricing, stock levels, and other product details.",
+                "System processes the addition, categorizes and rates the product.",
+                "System ranks the product and stores all data in the database.",
+                "Backend notifies relevant subscribers of the product addition, including price trends and availability."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Product Addition",
+                "description": "Verify that the seller can add a new product with all required fields completed.",
+                "input": {
+                    "productName": "Wireless Earbuds",
+                    "price": 99.99,
+                    "location": {
+                        "country": "USA",
+                        "state": "California",
+                        "city": "San Francisco",
+                        "zipCode": "94107"
+                    },
+                    "stockLevel": 50,
+                    "category": "Electronics",
+                    "shippingOptions": [
+                        "Standard",
+                        "Express"
+                    ],
+                    "estimatedDelivery": "2-5 business days",
+                    "returnPolicy": "30 days"
+                },
+                "expectedOutcome": {
+                    "productAdditionStatus": "success",
+                    "databaseUpdate": "Product categorized, rated, and ranked in the database.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "productID": "12345",
+                            "event": "new_product_added",
+                            "details": {
+                                "price": 99.99,
+                                "location": "San Francisco, CA",
+                                "availability": "In Stock",
+                                "historicalPrice": "N/A",
+                                "currentTrend": "Stable"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Notifications sent to 15 subscribers."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Product Addition via API",
+                "description": "Verify that a seller can successfully add a product using the provided API endpoint.",
+                "input": {
+                    "apiEndpoint": "/api/v1/products/add",
+                    "productDetails": {
+                        "productName": "Smartphone X",
+                        "price": 900,
+                        "location": {
+                            "country": "USA",
+                            "state": "California",
+                            "city": "Los Angeles",
+                            "zipCode": "90001"
+                        },
+                        "stockLevel": 30,
+                        "category": "Mobile Phones",
+                        "shippingOptions": [
+                            "Standard",
+                            "Express"
+                        ],
+                        "estimatedDelivery": "3-7 business days",
+                        "returnPolicy": "14 days"
+                    }
+                },
+                "expectedOutcome": {
+                    "productAdditionStatus": "success",
+                    "databaseUpdate": "Product categorized, rated, and ranked in the database.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "productID": "67890",
+                            "event": "new_product_added",
+                            "details": {
+                                "price": 900,
+                                "location": "Los Angeles, CA",
+                                "availability": "In Stock",
+                                "historicalPrice": "N/A",
+                                "currentTrend": "Stable"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Notifications sent to 10 subscribers."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Missing Required Field",
+                "description": "Verify that the system returns an error when a required field (e.g., productName or price) is missing.",
+                "input": {
+                    "productName": "",
+                    "price": null,
+                    "location": {
+                        "country": "USA",
+                        "state": "California",
+                        "city": "Los Angeles",
+                        "zipCode": "90001"
+                    },
+                    "stockLevel": 30
+                },
+                "expectedOutcome": {
+                    "productAdditionStatus": "failed",
+                    "error": "Required fields are missing: productName, price.",
+                    "notificationSystemInvocation": "not triggered"
+                }
+            },
+            {
+                "name": "Invalid Price Format",
+                "description": "Verify that the system handles cases where the price is in an incorrect format (e.g., negative or non-numeric).",
+                "input": {
+                    "productName": "Smartphone Case",
+                    "price": -25.99,
+                    "location": {
+                        "country": "Canada",
+                        "state": "Ontario",
+                        "city": "Toronto",
+                        "zipCode": "M5G 2C3"
+                    },
+                    "stockLevel": 200
+                },
+                "expectedOutcome": {
+                    "productAdditionStatus": "failed",
+                    "error": "Invalid price format.",
+                    "notificationSystemInvocation": "not triggered"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Product Update by Seller",
+            "description": "Seller updates the product's details (price, stock, etc.) through the Dealytics UI or api. The system re-categorizes, re-rates, and re-ranks the product and notifies subscribers.",
+            "actors": [
+                "Seller",
+                "Backend Notification System"
+            ],
+            "preconditions": "The product is already added to the system by the seller; Seller is logged in.",
+            "steps": [
+                "Seller accesses the product in their dashboard and chooses to edit details.",
+                "Seller modifies product details.",
+                "System updates product information, re-categorizes, re-rates, and re-ranks it.",
+                "Backend notification system alerts subscribers of significant changes, including price drops or updated stock levels."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Product Update",
+                "description": "Verify that the seller can update the product's price and stock level.",
+                "input": {
+                    "productID": "12345",
+                    "updatedDetails": {
+                        "productName": "Noise-canceling Headphones",
+                        "updatedPrice": 149.99,
+                        "updatedStockLevel": 75,
+                        "location": {
+                            "country": "USA",
+                            "state": "New York",
+                            "city": "New York City",
+                            "zipCode": "10001"
+                        }
+                    }
+                },
+                "expectedOutcome": {
+                    "productUpdateStatus": "success",
+                    "databaseUpdate": "Product re-categorized, re-rated, and re-ranked in the database.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "productID": "12345",
+                            "event": "product_update",
+                            "details": {
+                                "newPrice": 149.99,
+                                "stockLevel": 75,
+                                "location": "New York City, NY",
+                                "priceChange": "down",
+                                "trend": "Decreasing"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Notifications sent to 8 subscribers about the price update."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Update via API",
+                "description": "Verify that a seller can successfully update a product using the provided API endpoint.",
+                "input": {
+                    "apiEndpoint": "/api/v1/products/update",
+                    "productID": "12345",
+                    "updatedDetails": {
+                        "updatedPrice": 139.99,
+                        "updatedStockLevel": 70,
+                        "location": {
+                            "country": "USA",
+                            "state": "New York",
+                            "city": "New York City",
+                            "zipCode": "10001"
+                        }
+                    }
+                },
+                "expectedOutcome": {
+                    "productUpdateStatus": "success",
+                    "databaseUpdate": "Product re-categorized, re-rated, and re-ranked in the database.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "productID": "12345",
+                            "event": "product_update",
+                            "details": {
+                                "newPrice": 139.99,
+                                "stockLevel": 70,
+                                "location": "New York City, NY",
+                                "priceChange": "down",
+                                "trend": "Slight Decrease"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Notifications sent to 5 subscribers regarding the product update."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Update with Significant Price Drop",
+                "description": "Verify that the system notifies subscribers when there is a notable price drop on a product they follow.",
+                "input": {
+                    "productID": "67890",
+                    "updatedDetails": {
+                        "productName": "Fitness Tracker",
+                        "updatedPrice": 59.99,
+                        "stockLevel": 120
+                    }
+                },
+                "expectedOutcome": {
+                    "productUpdateStatus": "success",
+                    "databaseUpdate": "Product re-categorized, re-rated, and re-ranked in the database.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "productID": "67890",
+                            "event": "significant_price_drop",
+                            "details": {
+                                "oldPrice": 79.99,
+                                "newPrice": 59.99,
+                                "stockLevel": 120,
+                                "location": "Chicago, IL"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Notifications sent to 10 subscribers about the price drop."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Update Non-existent Product",
+                "description": "Verify that the system returns an error when attempting to update a product that doesn't exist.",
+                "input": {
+                    "productID": "99999",
+                    "updatedDetails": {
+                        "updatedPrice": 199.99,
+                        "updatedStockLevel": 50
+                    }
+                },
+                "expectedOutcome": {
+                    "productUpdateStatus": "failed",
+                    "error": "Product not found.",
+                    "notificationSystemInvocation": "not triggered"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Show Recommended Deals with Custom Search",
+            "scenario": "The system presents a personalized and trending of list deals with an option to search and filter products.",
+            "actors": "Buyer, Analytics Engine",
+            "preconditions": "Buyer is signed in and location, browsing history, or other relevant data is available.",
+            "steps": [
+                "Buyer signs in and navigates to the homepage.",
+                "System displays personalized and trending deals based on the buyer's data.",
+                "Buyer performs searches with filters to refine results.",
+                "System returns search results filtered by applied criteria."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Display Personalized and Trending Deals for Returning User",
+                "description": "Verify that personalized and trending deals are shown based on returning buyer data.",
+                "input": {
+                    "searchTerm": "",
+                    "filters": {},
+                    "buyerData": {
+                        "location": "Dhaka",
+                        "previousBrowsingHistory": [
+                            "Laptops",
+                            "Headphones"
+                        ],
+                        "userPreferences": [
+                            "High Ratings",
+                            "Discounts"
+                        ]
+                    }
+                },
+                "expected": {
+                    "outcome": "Homepage displays relevant personalized and trending deals.",
+                    "status": "Success",
+                    "displayedSections": [
+                        "personalized deals",
+                        "trending deals"
+                    ]
+                }
+            },
+            {
+                "name": "Display General Deals for New User",
+                "description": "Verify that general trending deals are shown for a newly registered buyer without browsing history or preferences.",
+                "input": {
+                    "searchTerm": "",
+                    "filters": {},
+                    "buyerData": {
+                        "location": "Noakhali",
+                        "previousBrowsingHistory": [],
+                        "userPreferences": []
+                    }
+                },
+                "expected": {
+                    "outcome": "Displays general trending deals due to lack of personalization data.",
+                    "status": "Success",
+                    "displayedSections": [
+                        "trending deals"
+                    ]
+                }
+            },
+            {
+                "name": "Search with Valid Filters",
+                "description": "Verify that the system returns search results based on valid filter criteria.",
+                "input": {
+                    "searchTerm": "Smartphone",
+                    "filters": {
+                        "priceRange": "300-800",
+                        "location": "within 30 miles",
+                        "rating": "4+"
+                    },
+                    "buyerData": {
+                        "location": "Sylhet",
+                        "previousBrowsingHistory": [
+                            "Walton Laptops"
+                        ],
+                        "userPreferences": [
+                            "Discounts"
+                        ]
+                    }
+                },
+                "expected": {
+                    "outcome": "Filtered search results displayed successfully.",
+                    "status": "Success",
+                    "searchResults": "Filtered by criteria"
+                }
+            },
+            {
+                "name": "Search with No Matching Results",
+                "description": "Verify that the system displays an appropriate message when no results match the applied filters.",
+                "input": {
+                    "searchTerm": "Tablet",
+                    "filters": {
+                        "priceRange": "10-50",
+                        "location": "within 500 meters",
+                        "rating": "5"
+                    },
+                    "buyerData": {
+                        "location": "Chattogram",
+                        "previousBrowsingHistory": [
+                            "Smartphones"
+                        ],
+                        "userPreferences": [
+                            "High Ratings"
+                        ]
+                    }
+                },
+                "expected": {
+                    "outcome": "No results found message displayed.",
+                    "status": "No Results",
+                    "message": "No deals match your search criteria."
+                }
+            },
+            {
+                "name": "Empty Search Term without Filters",
+                "description": "Verify that the system displays trending or default deals when the search term is empty and no filters are applied.",
+                "input": {
+                    "searchTerm": "",
+                    "filters": {},
+                    "buyerData": {
+                        "location": "Dinajpur",
+                        "previousBrowsingHistory": [
+                            "Headphones",
+                            "Speakers"
+                        ],
+                        "userPreferences": [
+                            "High Ratings",
+                            "Discounts"
+                        ]
+                    }
+                },
+                "expected": {
+                    "outcome": "Filtered recommended deals displayed.",
+                    "status": "Success",
+                    "displayedSections": [
+                        "recommended deals"
+                    ]
+                }
+            },
+            {
+                "name": "Invalid Search Filters",
+                "description": "Verify that the system handles invalid filter criteria gracefully, displaying an error message or default results.",
+                "input": {
+                    "searchTerm": "Laptop",
+                    "filters": {
+                        "priceRange": "50 - 10 USD",
+                        "location": "Moon",
+                        "rating": "100"
+                    },
+                    "buyerData": {
+                        "location": "New York",
+                        "previousBrowsingHistory": [
+                            "Tablets"
+                        ],
+                        "userPreferences": [
+                            "Discounts"
+                        ]
+                    }
+                },
+                "expected": {
+                    "outcome": "Error message displayed for invalid filters.",
+                    "status": "Error",
+                    "message": "Please enter valid filter criteria."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "View Deal Details and Analytics",
+            "scenario": "Buyer views detailed information about a product, including analytics such as price trends, ratings, quality metrics, and a comparison with related products.",
+            "actors": "Buyer, Analytics Engine",
+            "preconditions": "Buyer is signed in and has selected a deal to view.",
+            "steps": [
+                "Buyer selects a deal to view.",
+                "System retrieves product details, price trends, ratings, quality metrics, and related deal comparison data.",
+                "System generates and displays deal details, full analytics, and visual comparisons with related products."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Display All Deal Details and Analytics",
+                "description": "Verify that the full details of the deal, including price trends, ratings, quality analysis, and comparison with related products, are displayed.",
+                "input": {
+                    "dealID": "Deal567",
+                    "relatedDeals": [
+                        "Deal123",
+                        "Deal456"
+                    ]
+                },
+                "expected": {
+                    "outcome": "All deal details and analytics displayed, including price trends, ratings, quality analysis, and comparisons.",
+                    "status": "Success",
+                    "details": {
+                        "priceTrends": "visible",
+                        "ratings": "visible",
+                        "qualityAnalysis": "visible",
+                        "comparison": {
+                            "relatedDealsCompared": 2,
+                            "graphDisplayed": true
+                        },
+                        "pricePrediction": "visible",
+                        "optimalPurchaseTime": "visible"
+                    }
+                }
+            },
+            {
+                "name": "Display Limited Analytics",
+                "description": "Verify that the system shows available analytics and a message if certain analytics data is unavailable.",
+                "input": {
+                    "dealID": "DealNoAnalytics",
+                    "relatedDeals": [
+                        "Deal789"
+                    ]
+                },
+                "expected": {
+                    "outcome": "Available details and analytics displayed with 'No analytics available' message for missing data.",
+                    "status": "Partial Success",
+                    "details": {
+                        "priceTrends": "not available",
+                        "ratings": "visible",
+                        "qualityAnalysis": "not available",
+                        "comparison": {
+                            "relatedDealsCompared": 1,
+                            "graphDisplayed": false,
+                            "message": "Limited comparison data available"
+                        },
+                        "pricePrediction": "visible",
+                        "optimalPurchaseTime": "visible"
+                    }
+                }
+            },
+            {
+                "name": "Display All Details without Deal Comparison",
+                "description": "Verify that all deal analytics and details, without related deals, are displayed correctly.",
+                "input": {
+                    "dealID": "Deal567",
+                    "relatedDeals": []
+                },
+                "expected": {
+                    "outcome": "All deal details and analytics displayed without comparisons with related deals.",
+                    "status": "Partial Success",
+                    "details": {
+                        "priceTrends": "visible",
+                        "ratings": "visible",
+                        "qualityAnalysis": "visible",
+                        "comparison": {
+                            "relatedDealsCompared": 0,
+                            "graphDisplayed": false,
+                            "message": "Limited comparison data available"
+                        },
+                        "pricePrediction": "visible",
+                        "optimalPurchaseTime": "visible"
+                    }
+                }
+            },
+            {
+                "name": "Invalid Deal ID",
+                "description": "Verify that the system displays an error message if the deal ID is invalid.",
+                "input": {
+                    "dealID": "InvalidID",
+                    "relatedDeals": []
+                },
+                "expected": {
+                    "outcome": "Error message displayed indicating invalid deal.",
+                    "status": "Error",
+                    "message": "Deal not found."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Preset analytics on product",
+            "scenario": "Sellers view analytics related to their products, including sales trends, market demand, and competitor performance, enabling data-driven decisions.",
+            "actors": "Seller, Deal Analytics Engine",
+            "preconditions": "Seller has products listed on the platform and has access to the analytics dashboard.",
+            "steps": [
+                "Seller logs into the platform and accesses the analytics dashboard.",
+                "Seller selects specific analytics options (e.g., product performance, demand forecasting, competitor analysis).",
+                "System processes selected data and provides insights based on available information.",
+                "Seller reviews the data to make business decisions."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "View Product Performance - Normal Conditions",
+                "description": "Verify that a seller with active listings can view performance analytics for each product, including metrics such as views, sales, and rating.",
+                "input": {
+                    "sellerID": "S1001",
+                    "productID": "P2001",
+                    "analyticsType": "performance"
+                },
+                "expected": {
+                    "outcome": "Performance data displayed",
+                    "status": "Visible",
+                    "metrics": [
+                        "views",
+                        "sales",
+                        "rating"
+                    ]
+                }
+            },
+            {
+                "name": "View Product Performance - No Sales Data",
+                "description": "Verify that the system handles products with zero sales by showing available metrics (e.g., views, ratings) while displaying a 'No Sales Data' message.",
+                "input": {
+                    "sellerID": "S1001",
+                    "productID": "P2002",
+                    "analyticsType": "performance"
+                },
+                "expected": {
+                    "outcome": "Performance data displayed with 'No Sales Data'",
+                    "status": "Visible",
+                    "metrics": [
+                        "views",
+                        "rating"
+                    ],
+                    "note": "Sales data unavailable"
+                }
+            },
+            {
+                "name": "Demand Forecasting - Seasonal Product",
+                "description": "Verify that the system provides accurate demand forecasting for a seasonal product, showing expected demand peaks and dips based on historical data.",
+                "input": {
+                    "sellerID": "S1002",
+                    "productID": "P3001",
+                    "analyticsType": "demand forecasting"
+                },
+                "expected": {
+                    "outcome": "Demand forecast data displayed",
+                    "status": "Visible",
+                    "forecastType": "seasonal",
+                    "note": "Peak periods and low demand indicated"
+                }
+            },
+            {
+                "name": "Demand Forecasting - New Product with No History",
+                "description": "Verify that the system handles new products with no sales history by showing a message 'Insufficient Data for Forecasting'.",
+                "input": {
+                    "sellerID": "S1002",
+                    "productID": "P3002",
+                    "analyticsType": "demand forecasting"
+                },
+                "expected": {
+                    "outcome": "Forecast data not available",
+                    "status": "Message: 'Insufficient Data for Forecasting'",
+                    "forecastType": null
+                }
+            },
+            {
+                "name": "Competitor Analysis - Similar Product Available",
+                "description": "Verify that the seller can view competitor analysis for a product with similar listings, displaying competitors' prices, ratings, and recent trends.",
+                "input": {
+                    "sellerID": "S1003",
+                    "productID": "P4001",
+                    "analyticsType": "competitor analysis"
+                },
+                "expected": {
+                    "outcome": "Competitor data displayed",
+                    "status": "Visible",
+                    "metrics": [
+                        "competitor prices",
+                        "ratings",
+                        "trends"
+                    ]
+                }
+            },
+            {
+                "name": "Competitor Analysis - No Similar Competitors",
+                "description": "Verify that the system handles products with no similar competitor listings by displaying 'No Competitors Found'.",
+                "input": {
+                    "sellerID": "S1003",
+                    "productID": "P4002",
+                    "analyticsType": "competitor analysis"
+                },
+                "expected": {
+                    "outcome": "No competitor data available",
+                    "status": "Message: 'No Competitors Found'"
+                }
+            },
+            {
+                "name": "Sales Trend Analysis - High Sales Volume",
+                "description": "Verify that high sales volumes are correctly represented, showing trends over time, such as daily or monthly sales growth.",
+                "input": {
+                    "sellerID": "S1004",
+                    "productID": "P5001",
+                    "analyticsType": "sales trend"
+                },
+                "expected": {
+                    "outcome": "Sales trend data displayed",
+                    "status": "Visible",
+                    "trendType": "high volume",
+                    "metrics": [
+                        "daily growth",
+                        "monthly growth"
+                    ]
+                }
+            },
+            {
+                "name": "Sales Trend Analysis - Low or Fluctuating Sales",
+                "description": "Verify that the system accurately represents low or irregular sales trends, indicating fluctuations or drops in demand over time.",
+                "input": {
+                    "sellerID": "S1004",
+                    "productID": "P5002",
+                    "analyticsType": "sales trend"
+                },
+                "expected": {
+                    "outcome": "Fluctuating sales data displayed",
+                    "status": "Visible",
+                    "trendType": "fluctuating",
+                    "metrics": [
+                        "sporadic demand",
+                        "sales dips"
+                    ]
+                }
+            },
+            {
+                "name": "Inventory Recommendations - High Demand Product",
+                "description": "Verify that the system suggests optimal restock quantities and timing for high-demand products based on recent trends.",
+                "input": {
+                    "sellerID": "S1005",
+                    "productID": "P6001",
+                    "analyticsType": "inventory recommendation"
+                },
+                "expected": {
+                    "outcome": "Restock recommendation displayed",
+                    "status": "Visible",
+                    "recommendation": {
+                        "suggestedRestock": 100,
+                        "timeframe": "next week"
+                    }
+                }
+            },
+            {
+                "name": "Inventory Recommendations - Low Demand Product",
+                "description": "Verify that the system advises minimal restocking for low-demand products and provides a note suggesting cautious stock management.",
+                "input": {
+                    "sellerID": "S1005",
+                    "productID": "P6002",
+                    "analyticsType": "inventory recommendation"
+                },
+                "expected": {
+                    "outcome": "Restock recommendation displayed",
+                    "status": "Visible",
+                    "recommendation": {
+                        "suggestedRestock": 10,
+                        "timeframe": "next month"
+                    },
+                    "note": "Low demand - cautious restocking advised"
+                }
+            },
+            {
+                "name": "Price Optimization Suggestion - Highly Competitive Market",
+                "description": "Verify that the system suggests a competitive pricing strategy for a product in a highly competitive market.",
+                "input": {
+                    "sellerID": "S1006",
+                    "productID": "P7001",
+                    "analyticsType": "price optimization"
+                },
+                "expected": {
+                    "outcome": "Price recommendation displayed",
+                    "status": "Visible",
+                    "suggestedPrice": 90,
+                    "note": "Highly competitive market - lower price recommended"
+                }
+            },
+            {
+                "name": "Price Optimization Suggestion - Low Competition Market",
+                "description": "Verify that the system suggests a higher price for a product in a low-competition market while maintaining a competitive margin.",
+                "input": {
+                    "sellerID": "S1006",
+                    "productID": "P7002",
+                    "analyticsType": "price optimization"
+                },
+                "expected": {
+                    "outcome": "Price recommendation displayed",
+                    "status": "Visible",
+                    "suggestedPrice": 150,
+                    "note": "Low competition - higher price recommended"
+                }
+            },
+            {
+                "name": "Review and Feedback Insights - High Volume of Reviews",
+                "description": "Verify that the system displays aggregated customer feedback insights for a product with many reviews, highlighting recurring comments or issues.",
+                "input": {
+                    "sellerID": "S1007",
+                    "productID": "P8001",
+                    "analyticsType": "review insights"
+                },
+                "expected": {
+                    "outcome": "Review insights displayed",
+                    "status": "Visible",
+                    "feedbackSummary": [
+                        "quality issues",
+                        "positive service feedback"
+                    ]
+                }
+            },
+            {
+                "name": "Review and Feedback Insights - Low Volume of Reviews",
+                "description": "Verify that the system indicates a low review volume for new products and displays a note on limited data.",
+                "input": {
+                    "sellerID": "S1007",
+                    "productID": "P8002",
+                    "analyticsType": "review insights"
+                },
+                "expected": {
+                    "outcome": "Limited review insights displayed",
+                    "status": "Visible with note",
+                    "feedbackSummary": "Limited data available"
+                }
+            },
+            {
+                "name": "Invalid Analytics Request",
+                "description": "Verify that an error message is displayed when the seller requests an invalid analytics type.",
+                "input": {
+                    "sellerID": "S1008",
+                    "productID": "P9001",
+                    "analyticsType": "unknownType"
+                },
+                "expected": {
+                    "outcome": "Error message displayed",
+                    "status": "Error: 'Invalid analytics type requested'"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Custom Analysis and Export",
+            "scenario": "Sellers create customized analytics reports on specific parameters (price trends, demand, competition, etc.) and export the analysis as a document.",
+            "actors": "Seller, Analytics Engine",
+            "preconditions": "Seller has products listed on the platform and access to custom analysis options.",
+            "steps": [
+                "Seller selects custom parameters (e.g., price trends, demand forecasting, competitor analysis).",
+                "Seller defines any specific time ranges or filters for the analysis.",
+                "System processes and generates the custom analysis report.",
+                "Seller exports the report in the selected format (e.g., PDF, CSV)."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Create and Export Price Trend Analysis",
+                "description": "Verify that the seller can generate a price trend analysis for a selected product over a custom time range and export it as a PDF.",
+                "input": {
+                    "sellerID": "S1010",
+                    "productID": "P1001",
+                    "parameters": [
+                        "price trends"
+                    ],
+                    "timeRange": "last 6 months",
+                    "exportFormat": "PDF"
+                },
+                "expected": {
+                    "outcome": "Price trend analysis generated and exported as PDF",
+                    "status": "Successful export",
+                    "fileFormat": "PDF"
+                }
+            },
+            {
+                "name": "Create and Export Demand Forecasting Analysis",
+                "description": "Verify that the seller can generate a demand forecasting analysis and export it as a CSV file.",
+                "input": {
+                    "sellerID": "S1011",
+                    "productID": "P1002",
+                    "parameters": [
+                        "demand forecasting"
+                    ],
+                    "timeRange": "next 3 months",
+                    "exportFormat": "CSV"
+                },
+                "expected": {
+                    "outcome": "Demand forecasting analysis generated and exported as CSV",
+                    "status": "Successful export",
+                    "fileFormat": "CSV"
+                }
+            },
+            {
+                "name": "Create Multiple Parameter Analysis - Competitor and Demand",
+                "description": "Verify that the seller can generate an analysis on both competitor pricing and demand, then export it as an Excel file.",
+                "input": {
+                    "sellerID": "S1012",
+                    "productID": "P1003",
+                    "parameters": [
+                        "competitor pricing",
+                        "demand forecasting"
+                    ],
+                    "timeRange": "last 1 year",
+                    "exportFormat": "Excel"
+                },
+                "expected": {
+                    "outcome": "Competitor pricing and demand analysis generated and exported as Excel",
+                    "status": "Successful export",
+                    "fileFormat": "Excel"
+                }
+            },
+            {
+                "name": "Create Analysis with Invalid Parameter",
+                "description": "Verify that an error message is displayed if the seller selects an invalid parameter for analysis.",
+                "input": {
+                    "sellerID": "S1013",
+                    "productID": "P1004",
+                    "parameters": [
+                        "invalid parameter"
+                    ],
+                    "exportFormat": "PDF"
+                },
+                "expected": {
+                    "outcome": "Error message displayed",
+                    "status": "Error: 'Invalid parameter selected for analysis'"
+                }
+            },
+            {
+                "name": "Export in Unsupported Format",
+                "description": "Verify that an error message is displayed if the seller selects an unsupported export format.",
+                "input": {
+                    "sellerID": "S1014",
+                    "productID": "P1005",
+                    "parameters": [
+                        "price trends"
+                    ],
+                    "exportFormat": "TXT"
+                },
+                "expected": {
+                    "outcome": "Error message displayed",
+                    "status": "Error: 'Unsupported export format selected'"
+                }
+            },
+            {
+                "name": "Export Analysis Without Parameters Selected",
+                "description": "Verify that an error message is displayed if the seller attempts to export an analysis without selecting any parameters.",
+                "input": {
+                    "sellerID": "S1015",
+                    "productID": "P1006",
+                    "parameters": [],
+                    "exportFormat": "PDF"
+                },
+                "expected": {
+                    "outcome": "Error message displayed",
+                    "status": "Error: 'No parameters selected for analysis'"
+                }
+            },
+            {
+                "name": "Create and Export Custom Time Range Analysis",
+                "description": "Verify that the seller can create an analysis with a user-defined time range (e.g., last 15 days) and export it as a PDF.",
+                "input": {
+                    "sellerID": "S1016",
+                    "productID": "P1007",
+                    "parameters": [
+                        "price trends"
+                    ],
+                    "timeRange": "last 15 days",
+                    "exportFormat": "PDF"
+                },
+                "expected": {
+                    "outcome": "Custom time range analysis generated and exported as PDF",
+                    "status": "Successful export",
+                    "fileFormat": "PDF"
+                }
+            },
+            {
+                "name": "Create and Export Analysis for Multiple Products",
+                "description": "Verify that the seller can create a combined analysis for multiple products on a specific parameter and export it as a CSV.",
+                "input": {
+                    "sellerID": "S1017",
+                    "productIDs": [
+                        "P1008",
+                        "P1009"
+                    ],
+                    "parameters": [
+                        "sales trend"
+                    ],
+                    "timeRange": "last quarter",
+                    "exportFormat": "CSV"
+                },
+                "expected": {
+                    "outcome": "Combined analysis generated and exported as CSV",
+                    "status": "Successful export",
+                    "fileFormat": "CSV"
+                }
+            },
+            {
+                "name": "Export Analysis Without Defining Time Range",
+                "description": "Verify that the system applies a default time range if the seller does not specify one.",
+                "input": {
+                    "sellerID": "S1018",
+                    "productID": "P1010",
+                    "parameters": [
+                        "competitor pricing"
+                    ],
+                    "timeRange": null,
+                    "exportFormat": "Excel"
+                },
+                "expected": {
+                    "outcome": "Analysis generated with default time range and exported as Excel",
+                    "status": "Successful export",
+                    "defaultTimeRange": "last 3 months",
+                    "fileFormat": "Excel"
+                }
+            },
+            {
+                "name": "Export Analysis with Large Data Set",
+                "description": "Verify that the system successfully processes and exports large data sets without performance issues.",
+                "input": {
+                    "sellerID": "S1019",
+                    "productID": "P1011",
+                    "parameters": [
+                        "price trends",
+                        "sales trend",
+                        "competitor analysis"
+                    ],
+                    "timeRange": "last 2 years",
+                    "exportFormat": "Excel"
+                },
+                "expected": {
+                    "outcome": "Large data set analysis generated and exported as Excel",
+                    "status": "Successful export",
+                    "fileFormat": "Excel"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Buyer Subscription to Products",
+            "description": "Buyers can subscribe to products that are upcoming or already in the marketplace. They can also unsubscribe from these subscriptions.",
+            "actors": [
+                "Buyer",
+                "Backend Subscription System"
+            ],
+            "preconditions": "Buyer is logged in and has selected a product for subscription.",
+            "steps": [
+                "Buyer navigates to the product page for an upcoming or existing product.",
+                "Buyer clicks on the 'Subscribe' button for the product.",
+                "System saves the buyer's subscription preference for the selected product.",
+                "Buyer can view their active subscriptions in their profile.",
+                "Buyer can click 'Unsubscribe' to remove the subscription at any time."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Product Subscription",
+                "description": "Verify that a buyer can successfully subscribe to an upcoming product.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "upcomingProd123"
+                },
+                "expectedOutcome": {
+                    "subscriptionStatus": "success",
+                    "databaseUpdate": "Buyer subscription saved for product ID upcomingProd123.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "buyerID": "buyer001",
+                            "event": "subscription_update",
+                            "details": {
+                                "productID": "upcomingProd123",
+                                "subscriptionType": "add"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Subscription confirmed for product ID upcomingProd123."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Successful Unsubscription from Product",
+                "description": "Verify that a buyer can successfully unsubscribe from a product they previously subscribed to.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "existingProd456"
+                },
+                "expectedOutcome": {
+                    "unsubscriptionStatus": "success",
+                    "databaseUpdate": "Buyer subscription removed for product ID existingProd456.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "buyerID": "buyer001",
+                            "event": "subscription_update",
+                            "details": {
+                                "productID": "existingProd456",
+                                "subscriptionType": "remove"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Unsubscription confirmed for product ID existingProd456."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Unsuccessful Subscription to Already Subscribed Product",
+                "description": "Verify that the system handles cases where a buyer tries to subscribe to a product they are already subscribed to.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "upcomingProd123"
+                },
+                "expectedOutcome": {
+                    "subscriptionStatus": "failed",
+                    "error": "You are already subscribed to product ID upcomingProd123.",
+                    "databaseUpdate": "No changes made to subscription preferences."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Seller Subscription to Product Categories",
+            "description": "Sellers can subscribe to notifications based on specific product categories. They can also unsubscribe from these subscriptions.",
+            "actors": [
+                "Seller",
+                "Backend Subscription System"
+            ],
+            "preconditions": "Seller is logged in and has selected product categories for subscription.",
+            "steps": [
+                "Seller navigates to the category subscription section in the dashboard.",
+                "Seller selects product categories they want to receive notifications for.",
+                "System saves the seller's subscription preferences for the selected categories.",
+                "Seller can view their active category subscriptions in their profile.",
+                "Seller can click 'Unsubscribe' to remove the subscription at any time."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Category Subscription",
+                "description": "Verify that a seller can successfully subscribe to notifications for a specific product category.",
+                "input": {
+                    "sellerID": "seller001",
+                    "subscribedCategories": [
+                        "Electronics",
+                        "Home Appliances"
+                    ]
+                },
+                "expectedOutcome": {
+                    "subscriptionStatus": "success",
+                    "databaseUpdate": "Seller subscription saved for categories: Electronics, Home Appliances.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "sellerID": "seller001",
+                            "event": "category_subscription_update",
+                            "details": {
+                                "subscribedCategories": [
+                                    "Electronics",
+                                    "Home Appliances"
+                                ],
+                                "subscriptionType": "add"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Subscription confirmed for categories: Electronics, Home Appliances."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Successful Unsubscription from Category",
+                "description": "Verify that a seller can successfully unsubscribe from a product category they previously subscribed to.",
+                "input": {
+                    "sellerID": "seller001",
+                    "unsubscribedCategory": "Home Appliances"
+                },
+                "expectedOutcome": {
+                    "unsubscriptionStatus": "success",
+                    "databaseUpdate": "Seller subscription removed for category Home Appliances.",
+                    "notificationSystemInvocation": {
+                        "request": {
+                            "sellerID": "seller001",
+                            "event": "category_subscription_update",
+                            "details": {
+                                "unsubscribedCategory": "Home Appliances",
+                                "subscriptionType": "remove"
+                            }
+                        },
+                        "response": {
+                            "status": "success",
+                            "message": "Unsubscription confirmed for category Home Appliances."
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Unsuccessful Subscription to Invalid Category",
+                "description": "Verify that the system handles cases where a seller attempts to subscribe to a non-existent product category.",
+                "input": {
+                    "sellerID": "seller002",
+                    "subscribedCategories": [
+                        "NonexistentCategory"
+                    ]
+                },
+                "expectedOutcome": {
+                    "subscriptionStatus": "failed",
+                    "error": "Invalid category: NonexistentCategory.",
+                    "databaseUpdate": "No changes made to subscription preferences."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Seller Notification for Demand and Pricing Changes",
+            "scenario": "The system notifies sellers when their subscribed category products need to be produced more due to high market demand or when prices need to be adjusted due to competitor market conditions.",
+            "actors": "System, Seller",
+            "preconditions": "Sellers are subscribed to product categories, Database is accessible",
+            "steps": [
+                "System monitors market demand and competitor pricing",
+                "System detects high demand for a product",
+                "System prepares notification for the seller about production increase",
+                "System detects a competitor price change affecting the product",
+                "System prepares notification for the seller about price adjustment",
+                "Notifications are sent to the seller"
+            ],
+            "postconditions": "The seller receives notifications regarding production needs and pricing changes"
+        },
+        "testcases": [
+            {
+                "name": "Notify Seller of High Demand",
+                "description": "Verify that the system notifies the seller when there is high demand for their product.",
+                "input": {
+                    "action": "High product demand detected",
+                    "productID": "prod123",
+                    "demandIncrease": 150
+                },
+                "expected": {
+                    "outcome": "Notification sent successfully",
+                    "notificationType": "Production Increase",
+                    "message": "Increase production for product ID prod123 due to high demand."
+                }
+            },
+            {
+                "name": "Notify Seller of Competitor Price Change",
+                "description": "Verify that the system notifies the seller when there is a competitor's price change.",
+                "input": {
+                    "action": "Competitor price change",
+                    "productID": "prod123",
+                    "oldPrice": 100,
+                    "newPrice": 90,
+                    "competitor": "CompetitorA"
+                },
+                "expected": {
+                    "outcome": "Notification sent successfully",
+                    "notificationType": "Price Adjustment",
+                    "message": "Adjust your price for product ID prod123 due to CompetitorA's price change."
+                }
+            },
+            {
+                "name": "Notify Seller of Increased Demand for Multiple Products",
+                "description": "Verify that the system notifies the seller when there is high demand for multiple products they offer.",
+                "input": {
+                    "action": "High demand detected",
+                    "products": [
+                        {
+                            "productID": "prod123",
+                            "demandIncrease": 150
+                        },
+                        {
+                            "productID": "prod456",
+                            "demandIncrease": 200
+                        }
+                    ]
+                },
+                "expected": {
+                    "outcome": "Notifications sent successfully",
+                    "notificationType": "Production Increase",
+                    "messages": [
+                        "Increase production for product ID prod123 due to high demand.",
+                        "Increase production for product ID prod456 due to high demand."
+                    ]
+                }
+            },
+            {
+                "name": "Notify Seller of Multiple Competitor Price Changes",
+                "description": "Verify that the system notifies the seller when there are multiple competitor price changes affecting their products.",
+                "input": {
+                    "action": "Competitor price changes detected",
+                    "priceChanges": [
+                        {
+                            "productID": "prod123",
+                            "oldPrice": 100,
+                            "newPrice": 90,
+                            "competitor": "CompetitorA"
+                        },
+                        {
+                            "productID": "prod456",
+                            "oldPrice": 80,
+                            "newPrice": 75,
+                            "competitor": "CompetitorB"
+                        }
+                    ]
+                },
+                "expected": {
+                    "outcome": "Notifications sent successfully",
+                    "notificationType": "Price Adjustment",
+                    "messages": [
+                        "Adjust your price for product ID prod123 due to CompetitorA's price change.",
+                        "Adjust your price for product ID prod456 due to CompetitorB's price change."
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Buyer Notification for Price Drops and New Deals",
+            "scenario": "The system notifies buyers of historical price drops or new deals in the market.",
+            "actors": "System, Buyer",
+            "preconditions": "Market monitoring is active, Database is accessible",
+            "steps": [
+                "System monitors product price history and new deals",
+                "System detects a significant historical price drop for a product",
+                "System prepares notification for the buyer about the price drop",
+                "System identifies new deals in the market",
+                "System prepares notification for the buyer about new deals",
+                "Notifications are sent to the buyer"
+            ],
+            "postconditions": "The buyer receives notifications about price drops and new deals"
+        },
+        "testcases": [
+            {
+                "name": "Notify Buyer of Historical Price Drop",
+                "description": "Verify that the system notifies the buyer when there is a significant historical price drop for a product.",
+                "input": {
+                    "action": "Historical price drop detected",
+                    "productID": "prod456",
+                    "oldPrice": 120,
+                    "newPrice": 90
+                },
+                "expected": {
+                    "outcome": "Notification sent successfully",
+                    "notificationType": "Price Drop Alert",
+                    "message": "Product ID prod456 has dropped from $120 to $90."
+                }
+            },
+            {
+                "name": "Notify Buyer of New Deal Addition",
+                "description": "Verify that the system notifies the buyer of new deals added to the market.",
+                "input": {
+                    "action": "New deal creation",
+                    "dealDetails": {
+                        "productID": "prod789",
+                        "type": "Flash Sale",
+                        "discount": "20%",
+                        "duration": "48h"
+                    }
+                },
+                "expected": {
+                    "outcome": "Notification sent successfully",
+                    "notificationType": "New Deal Alert",
+                    "message": "New deal for product ID prod789: 20% off for the next 48 hours!"
+                }
+            },
+            {
+                "name": "Notify Buyer of Multiple Price Drops",
+                "description": "Verify that the system notifies the buyer of multiple historical price drops for products they are interested in.",
+                "input": {
+                    "action": "Multiple historical price drops detected",
+                    "priceDrops": [
+                        {
+                            "productID": "prod123",
+                            "oldPrice": 150,
+                            "newPrice": 100
+                        },
+                        {
+                            "productID": "prod456",
+                            "oldPrice": 200,
+                            "newPrice": 150
+                        }
+                    ]
+                },
+                "expected": {
+                    "outcome": "Notifications sent successfully",
+                    "notificationType": "Price Drop Alerts",
+                    "messages": [
+                        "Product ID prod123 has dropped from $150 to $100.",
+                        "Product ID prod456 has dropped from $200 to $150."
+                    ]
+                }
+            },
+            {
+                "name": "Notify Buyer of Expiring Deals",
+                "description": "Verify that the system notifies the buyer when a deal is about to expire.",
+                "input": {
+                    "action": "Deal expiration detected",
+                    "dealDetails": {
+                        "productID": "prod789",
+                        "expirationTime": "2h"
+                    }
+                },
+                "expected": {
+                    "outcome": "Notification sent successfully",
+                    "notificationType": "Deal Expiration Alert",
+                    "message": "Hurry! The deal for product ID prod789 expires in 2 hours."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Product Review by Buyer",
+            "description": "Buyers can submit a review for a product they purchased from a seller. Reviews include a rating, comment, and an optional picture. A buyer can only submit one review per product.",
+            "actors": [
+                "Buyer",
+                "Product Review System"
+            ],
+            "preconditions": "Buyer has purchased the product from the seller and is logged into their account.",
+            "steps": [
+                "Buyer navigates to the product page of the purchased item.",
+                "Buyer clicks on the 'Write a Review' button.",
+                "Buyer enters a rating (1-5 stars), a comment, and optionally uploads a picture.",
+                "System validates the input and checks if the buyer has previously reviewed the product.",
+                "If valid, system saves the review and associates it with the product and buyer.",
+                "Buyer is notified that their review has been submitted successfully."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Product Review Submission",
+                "description": "Verify that a buyer can successfully submit a review for a product they purchased.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "prod123",
+                    "rating": 5,
+                    "comment": "Excellent quality and sound!",
+                    "picture": [
+                        "image1.jpg",
+                        "image2.jpg"
+                    ]
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "success",
+                    "databaseUpdate": "Review saved for product ID prod123 by buyer ID buyer001.",
+                    "notification": {
+                        "status": "success",
+                        "message": "Your review has been submitted successfully."
+                    }
+                }
+            },
+            {
+                "name": "Attempt to Submit Multiple Reviews for the Same Product",
+                "description": "Verify that the system prevents a buyer from submitting more than one review for the same product.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "prod123",
+                    "rating": 4,
+                    "comment": "Good product!",
+                    "picture": [
+                        "image3.jpg"
+                    ]
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "You have already submitted a review for this product.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            },
+            {
+                "name": "Invalid Review Submission with Missing Rating",
+                "description": "Verify that the system handles cases where the buyer tries to submit a review without a rating.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "productID": "prod123",
+                    "rating": null,
+                    "comment": "Nice product.",
+                    "picture": "image.jpg"
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "Rating is required to submit a review.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            },
+            {
+                "name": "Review Submission Attempt Without Purchase",
+                "description": "Verify that the system prevents a buyer from submitting a review for a product they did not purchase from the seller.",
+                "input": {
+                    "buyerID": "buyer003",
+                    "productID": "prod789",
+                    "rating": 5,
+                    "comment": "I love this product!",
+                    "picture": "product_image.jpg"
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "You can only review products that you have purchased.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Seller Review by Buyer",
+            "description": "Buyers can submit a review for a seller based on their experience. Reviews include a rating, comment, and an optional picture. A buyer can only submit one review per seller.",
+            "actors": [
+                "Buyer",
+                "Seller Review System"
+            ],
+            "preconditions": "Buyer has purchased a product from the seller and is logged into their account.",
+            "steps": [
+                "Buyer navigates to the seller's page.",
+                "Buyer clicks on the 'Write a Review' button.",
+                "Buyer enters a rating (1-5 stars), a comment, and optionally uploads a picture.",
+                "System validates the input and checks if the buyer has previously reviewed the seller.",
+                "If valid, system saves the review and associates it with the seller and buyer.",
+                "Buyer is notified that their review has been submitted successfully."
+            ]
+        },
+        "testcases": [
+            {
+                "name": "Successful Positive Review Submission",
+                "description": "Verify that a buyer can successfully submit a positive review for a seller they purchased from.",
+                "input": {
+                    "type": "positive",
+                    "buyerID": "buyer001",
+                    "sellerID": "seller123",
+                    "rating": 5,
+                    "comment": "Great service and fast shipping!",
+                    "picture": "seller_review_image.jpg"
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "success",
+                    "databaseUpdate": "Review saved for seller ID seller123 by buyer ID buyer001.",
+                    "notification": {
+                        "status": "success",
+                        "message": "Your review has been submitted successfully."
+                    }
+                }
+            },
+            {
+                "name": "Successful Negative Review Submission with Proof Requirement",
+                "description": "Verify that a buyer must provide proof (link or picture) when submitting a negative review for a seller.",
+                "input": {
+                    "type": "complaint",
+                    "buyerID": "buyer001",
+                    "sellerID": "seller123",
+                    "rating": 1,
+                    "comment": "The product was defective and not as described.",
+                    "proof": {
+                        "link": "http://example.com/defective-product",
+                        "picture": "defective_product.jpg"
+                    }
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "success",
+                    "databaseUpdate": "Negative review saved for seller ID seller123 by buyer ID buyer001 with provided proof.",
+                    "notification": {
+                        "status": "success",
+                        "message": "Your complain has been submitted successfully for review, including the proof."
+                    }
+                }
+            },
+            {
+                "name": "Negative Review Submission Without Proof",
+                "description": "Verify that the system prevents a buyer from submitting a negative review without providing proof.",
+                "input": {
+                    "type": "complaint",
+                    "buyerID": "buyer002",
+                    "sellerID": "seller456",
+                    "rating": 2,
+                    "comment": "I had a bad experience with this seller."
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "A proof is required for negative reviews.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            },
+            {
+                "name": "Attempt to Submit Multiple Reviews for the Same Seller",
+                "description": "Verify that the system prevents a buyer from submitting more than one review for the same seller.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "sellerID": "seller123",
+                    "rating": 4,
+                    "comment": "Good service!",
+                    "picture": "another_image.jpg",
+                    "type": "positive"
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "You have already submitted a review for this seller.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            },
+            {
+                "name": "Invalid Seller Review Submission with Missing Comment",
+                "description": "Verify that the system handles cases where the buyer tries to submit a review without a comment.",
+                "input": {
+                    "buyerID": "buyer001",
+                    "sellerID": "seller123",
+                    "rating": 5,
+                    "comment": "",
+                    "picture": "seller_review_image.jpg",
+                    "type": "positive"
+                },
+                "expectedOutcome": {
+                    "reviewSubmissionStatus": "failed",
+                    "error": "Comment is required to submit a review.",
+                    "databaseUpdate": "No changes made to reviews."
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Initiate Negotiation",
+            "scenario": "The buyer sees a 'Negotiate' button on a product page, indicating that the product is negotiable. By clicking this button, the buyer initiates a negotiation and defines terms based on allowed parameters.",
+            "actors": "Buyer",
+            "preconditions": "Buyer has selected a product to negotiate.",
+            "steps": [
+                "Buyer clicks the 'Negotiate' button",
+                "Buyer defines terms based on allowed parameters"
+            ],
+            "postconditions": "Negotiation terms are set, and the offer is generated."
+        },
+        "testcases": [
+            {
+                "name": "Start Negotiation with Valid Terms",
+                "description": "To verify that a buyer can start a negotiation with valid parameters.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": "Valid terms within allowed parameters"
+                },
+                "expected": {
+                    "outcome": "Negotiation terms are set",
+                    "offerStatus": "Generated"
+                }
+            },
+            {
+                "name": "Start Negotiation with Missing Terms",
+                "description": "Verify that the system handles missing negotiation terms gracefully.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": "None"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Negotiation terms are required",
+                    "offerStatus": "Not generated"
+                }
+            },
+            {
+                "name": "Start Negotiation with Invalid Price Term",
+                "description": "Verify that the system detects an invalid price (e.g., negative or zero) in negotiation terms.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": {
+                        "price": -100,
+                        "quantity": 1,
+                        "deliveryDate": "2024-11-10"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Invalid price value",
+                    "offerStatus": "Not generated"
+                }
+            },
+            {
+                "name": "Start Negotiation with Invalid Quantity Term",
+                "description": "Ensure the system catches an invalid quantity (e.g., zero or negative) in negotiation terms.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": {
+                        "price": 500,
+                        "quantity": 0,
+                        "deliveryDate": "2024-11-10"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Quantity must be greater than zero",
+                    "offerStatus": "Not generated"
+                }
+            },
+            {
+                "name": "Start Negotiation with Past Delivery Date",
+                "description": "Verify that the system checks for a valid delivery date that is not in the past.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": {
+                        "price": 500,
+                        "quantity": 1,
+                        "deliveryDate": "2023-10-10"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Delivery date cannot be in the past",
+                    "offerStatus": "Not generated"
+                }
+            },
+            {
+                "name": "Start Negotiation with Terms Exceeding Allowed Limits",
+                "description": "Ensure the system handles cases where terms exceed allowed limits, such as price too high.",
+                "input": {
+                    "action": "Buyer initiates negotiation",
+                    "terms": {
+                        "price": 10000,
+                        "quantity": 1,
+                        "deliveryDate": "2024-11-10"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Price exceeds allowable limit",
+                    "offerStatus": "Not generated"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Accept Offer",
+            "scenario": "The buyer or seller accepts the counterparty's offer, which finalizes the negotiation.",
+            "actors": "Buyer or Seller",
+            "preconditions": "An offer has been received.",
+            "steps": [
+                "Counterparty reviews the offer",
+                "Counterparty accepts the offer"
+            ],
+            "postconditions": "Negotiation is marked as 'Deal Done.'"
+        },
+        "testcases": [
+            {
+                "name": "Seller Accepts Offer",
+                "description": "To test that the seller can accept an offer, marking the deal as done.",
+                "input": {
+                    "action": "Seller accepts the buyer's offer"
+                },
+                "expected": {
+                    "outcome": "Deal is marked as 'Deal Done'",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Buyer Accepts Counter-Offer",
+                "description": "To verify that the buyer can accept a counter-offer from the seller, marking the deal as done.",
+                "input": {
+                    "action": "Buyer accepts the seller's counter-offer"
+                },
+                "expected": {
+                    "outcome": "Deal is marked as 'Deal Done'",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Attempt to Accept Expired Offer",
+                "description": "To ensure the system does not allow acceptance of an offer that has expired.",
+                "input": {
+                    "action": "Counterparty attempts to accept an expired offer"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Offer has expired",
+                    "negotiationStatus": "Not Closed"
+                }
+            },
+            {
+                "name": "Accept Offer with Missing Offer Details",
+                "description": "Verify that the system handles cases where an offer is accepted without complete offer details.",
+                "input": {
+                    "action": "Counterparty attempts to accept an offer",
+                    "offerDetails": null
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Offer details are incomplete",
+                    "negotiationStatus": "Not Closed"
+                }
+            },
+            {
+                "name": "Duplicate Acceptance Attempt",
+                "description": "Ensure that once an offer is accepted and marked as 'Deal Done,' additional acceptance attempts are prevented.",
+                "input": {
+                    "action": "Counterparty attempts to accept an offer already marked as 'Deal Done'"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Offer has already been accepted",
+                    "negotiationStatus": "Closed"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Counter Offer",
+            "scenario": "Either the buyer or the seller makes a counter-offer.",
+            "actors": "Buyer or Seller",
+            "preconditions": "Initial offer is not accepted by either party.",
+            "steps": [
+                "Buyer or seller makes a counter-offer"
+            ],
+            "postconditions": "A new offer is submitted for review."
+        },
+        "testcases": [
+            {
+                "name": "Generate Counter Offer",
+                "description": "To verify that a counter-offer can be made if the initial offer is declined.",
+                "input": {
+                    "action": "Seller declines initial offer",
+                    "counterOffer": "New terms are proposed"
+                },
+                "expected": {
+                    "outcome": "Counter-offer submitted",
+                    "negotiationStatus": "Open"
+                }
+            },
+            {
+                "name": "Counter Offer with Valid Terms",
+                "description": "To verify that a buyer or seller can submit a counter-offer with valid terms.",
+                "input": {
+                    "action": "Counterparty makes a counter-offer",
+                    "terms": {
+                        "price": 450,
+                        "quantity": 2,
+                        "deliveryDate": "2024-12-01"
+                    }
+                },
+                "expected": {
+                    "outcome": "Counter-offer submitted",
+                    "negotiationStatus": "Open"
+                }
+            },
+            {
+                "name": "Counter Offer with Terms Exceeding Limits",
+                "description": "Ensure the system prevents a counter-offer with terms exceeding allowable limits (e.g., excessive price).",
+                "input": {
+                    "action": "Counterparty makes a counter-offer",
+                    "terms": {
+                        "price": 10000,
+                        "quantity": 2,
+                        "deliveryDate": "2024-12-01"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Price exceeds allowable limit",
+                    "negotiationStatus": "Not submitted"
+                }
+            },
+            {
+                "name": "Counter Offer with Missing Terms",
+                "description": "Verify that the system handles cases where required terms are missing in the counter-offer.",
+                "input": {
+                    "action": "Counterparty makes a counter-offer",
+                    "terms": {
+                        "price": 500,
+                        "quantity": null,
+                        "deliveryDate": "2024-12-01"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Quantity is required",
+                    "negotiationStatus": "Not submitted"
+                }
+            },
+            {
+                "name": "Counter Offer After Finalized Deal",
+                "description": "Ensure the system blocks counter-offer attempts after the deal is marked as 'Deal Done.'",
+                "input": {
+                    "action": "Counterparty attempts to make a counter-offer",
+                    "dealStatus": "Deal Done"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Deal is already finalized",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Invalid Delivery Date in Counter Offer",
+                "description": "Verify that the system checks for a valid delivery date that is not in the past.",
+                "input": {
+                    "action": "Counterparty makes a counter-offer",
+                    "terms": {
+                        "price": 500,
+                        "quantity": 2,
+                        "deliveryDate": "2023-11-01"
+                    }
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Delivery date cannot be in the past",
+                    "negotiationStatus": "Not submitted"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Close Negotiation without Agreement",
+            "scenario": "Either party decides to end the negotiation without agreement.",
+            "actors": "Buyer or Seller",
+            "preconditions": "An offer or counter-offer exists.",
+            "steps": [
+                "Party chooses to close the negotiation"
+            ],
+            "postconditions": "Negotiation is marked as 'Closed.'"
+        },
+        "testcases": [
+            {
+                "name": "Close Negotiation without Agreement",
+                "description": "To ensure that the negotiation can be closed if no agreement is reached.",
+                "input": {
+                    "action": "Seller decides to close the negotiation"
+                },
+                "expected": {
+                    "outcome": "Negotiation closed",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Close Negotiation after Counter Offer",
+                "description": "Verify that either party can close the negotiation even if a counter-offer has been made.",
+                "input": {
+                    "action": "Buyer decides to close the negotiation",
+                    "counterOfferExists": true
+                },
+                "expected": {
+                    "outcome": "Negotiation closed",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Attempt to Close Already Closed Negotiation",
+                "description": "Ensure the system prevents closing a negotiation that is already marked as closed.",
+                "input": {
+                    "action": "Seller tries to close negotiation",
+                    "negotiationStatus": "Closed"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Negotiation is already closed",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Close Negotiation with Pending Offer Acceptance",
+                "description": "Verify that a negotiation can be closed even if the offer acceptance is pending.",
+                "input": {
+                    "action": "Buyer decides to close the negotiation",
+                    "offerAcceptanceStatus": "Pending"
+                },
+                "expected": {
+                    "outcome": "Negotiation closed",
+                    "negotiationStatus": "Closed"
+                }
+            }
+        ]
+    },
+    {
+        "usecase": {
+            "name": "Proceed with Shipment",
+            "scenario": "Once a deal is finalized, the seller proceeds to shipment.",
+            "actors": "Seller",
+            "preconditions": "Buyer has accepted the offer, and the deal is finalized.",
+            "steps": [
+                "Seller starts shipment process"
+            ],
+            "postconditions": "Product shipment process begins."
+        },
+        "testcases": [
+            {
+                "name": "Proceed with Shipment after Deal Finalization",
+                "description": "To test that shipment proceeds once a deal is finalized.",
+                "input": {
+                    "action": "Buyer accepts offer",
+                    "dealStatus": "Finalized"
+                },
+                "expected": {
+                    "outcome": "Shipment process begins",
+                    "negotiationStatus": "Closed"
+                }
+            },
+            {
+                "name": "Attempt Shipment without Finalized Deal",
+                "description": "Verify that shipment cannot proceed if the deal has not been finalized.",
+                "input": {
+                    "action": "Seller tries to start shipment",
+                    "dealStatus": "Not Finalized"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Deal is not finalized",
+                    "shipmentStatus": "Not started"
+                }
+            },
+            {
+                "name": "Shipment After Deal Cancellation",
+                "description": "Ensure the system prevents shipment if the deal was canceled.",
+                "input": {
+                    "action": "Seller tries to start shipment",
+                    "dealStatus": "Canceled"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Deal was canceled",
+                    "shipmentStatus": "Not started"
+                }
+            },
+            {
+                "name": "Invalid Shipment Process Initiation",
+                "description": "Verify that the system checks for a valid shipment initiation when conditions are not met.",
+                "input": {
+                    "action": "Seller initiates shipment process without meeting conditions",
+                    "dealStatus": "Pending"
+                },
+                "expected": {
+                    "outcome": "Error",
+                    "errorMessage": "Cannot proceed with shipment as conditions are unmet",
+                    "shipmentStatus": "Not started"
+                }
+            }
+        ]
+    }
+]

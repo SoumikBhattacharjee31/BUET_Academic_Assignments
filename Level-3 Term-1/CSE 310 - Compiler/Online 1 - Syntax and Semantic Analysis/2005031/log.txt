@@ -1,0 +1,207 @@
+Line# 1: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 1: Token <ID> Lexeme foo found
+Line# 1: Token <LPAREN> Lexeme ( found
+Line# 1: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 1: Token <ID> Lexeme x found
+parameter_list  : type_specifier ID
+Line# 1: Token <COMMA> Lexeme , found
+Line# 1: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 1: Token <ID> Lexeme y found
+parameter_list  : parameter_list COMMA type_specifier ID
+Line# 1: Token <COMMA> Lexeme , found
+Line# 1: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 1: Token <ID> Lexeme z found
+parameter_list  : parameter_list COMMA type_specifier ID
+Line# 1: Token <RPAREN> Lexeme ) found
+Line# 1: Token <LCURL> Lexeme { found
+Line# 2: warning, 1 of tabs needed but got 0 tabs.
+Line# 2: Token <RETURN> Lexeme return found
+Line# 2: Token <ID> Lexeme x found
+Line# 2: Token <ADDOP> Lexeme + found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : term 
+Line# 2: Token <ID> Lexeme y found
+Line# 2: Token <ADDOP> Lexeme + found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : simple_expression ADDOP term  
+Line# 2: Token <ID> Lexeme z found
+Line# 2: Token <SEMICOLON> Lexeme ; found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : simple_expression ADDOP term  
+rel_expression	: simple_expression 
+logic_expression : rel_expression 	 
+expression 	: logic_expression	 
+statement : RETURN expression SEMICOLON
+statements : statement  
+Line# 3: Token <RCURL> Lexeme } found
+compound_statement : LCURL statements RCURL  
+	ScopeTable# 2
+	1--> <y,INT> 
+	2--> <z,INT> 
+	11--> <x,INT> 
+	ScopeTable# 1
+func_definition : type_specifier ID LPAREN parameter_list RPAREN compound_statement 
+unit : func_definition  
+program : unit 
+Line# 4: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 4: Token <ID> Lexeme main found
+Line# 4: Token <LPAREN> Lexeme ( found
+Line# 4: Token <RPAREN> Lexeme ) found
+Line# 4: Token <LCURL> Lexeme { found
+Line# 5: warning, 1 of tabs needed but got 0 tabs.
+Line# 5: Token <INT> Lexeme int found
+type_specifier	: INT 
+Line# 5: Token <ID> Lexeme a found
+Line# 5: Token <COMMA> Lexeme , found
+declaration_list : ID 
+Line# 5: Token <ID> Lexeme b found
+Line# 5: Token <SEMICOLON> Lexeme ; found
+declaration_list : declaration_list COMMA ID  
+var_declaration : type_specifier declaration_list SEMICOLON  
+statement : var_declaration 
+statements : statement  
+Error at line no 6 : syntax error
+Line# 6: warning, 1 of tabs needed but got 0 tabs.
+Line# 6: Token <LPAREN> Lexeme ( found
+Line# 6: Token <ID> Lexeme foo found
+Line# 6: Token <LPAREN> Lexeme ( found
+Line# 6: Token <CONST_INT> Lexeme 1 found
+Line# 6: Token <COMMA> Lexeme , found
+Line# 6: Token <CONST_INT> Lexeme 2 found
+Line# 6: Token <COMMA> Lexeme , found
+Line# 6: Token <CONST_INT> Lexeme 3 found
+Line# 6: Token <RPAREN> Lexeme ) found
+Line# 6: Token <RPAREN> Lexeme ) found
+Line# 6: Token <LCURL> Lexeme { found
+Line# 7: warning, 2 of tabs needed but got 0 tabs.
+Line# 7: Token <CONST_INT> Lexeme 1 found
+Line# 8: warning, 2 of tabs needed but got 0 tabs.
+Line# 8: Token <ID> Lexeme a found
+Line# 8: Token <ASSIGNOP> Lexeme = found
+Line# 8: Token <CONST_INT> Lexeme 1 found
+Line# 8: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 9: warning, 2 of tabs needed but got 0 tabs.
+Line# 9: Token <ID> Lexeme b found
+Line# 9: Token <ASSIGNOP> Lexeme = found
+variable : ID 	 
+Line# 9: Token <ID> Lexeme a found
+Line# 9: Token <ADDOP> Lexeme + found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : term 
+Line# 9: Token <CONST_INT> Lexeme 1 found
+factor	: CONST_INT   
+unary_expression : factor 
+term :	unary_expression 
+Line# 9: Token <SEMICOLON> Lexeme ; found
+simple_expression : simple_expression ADDOP term  
+rel_expression	: simple_expression 
+logic_expression : rel_expression 	 
+expression 	: variable ASSIGNOP logic_expression 		 
+expression_statement : expression SEMICOLON 		 
+statement : expression_statement  
+statements : statements statement  
+Error at line no 10 : syntax error
+Line# 10: warning, 2 of tabs needed but got 0 tabs.
+Line# 10: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 11: warning, 2 of tabs needed but got 0 tabs.
+Line# 11: Token <CONST_INT> Lexeme 2 found
+Line# 12: warning, 2 of tabs needed but got 0 tabs.
+Line# 12: Token <ID> Lexeme a found
+Line# 12: Token <ASSIGNOP> Lexeme = found
+Line# 12: Token <CONST_INT> Lexeme 2 found
+Line# 12: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 13: warning, 2 of tabs needed but got 0 tabs.
+Line# 13: Token <ID> Lexeme b found
+Line# 13: Token <ASSIGNOP> Lexeme = found
+variable : ID 	 
+Line# 13: Token <ID> Lexeme a found
+Line# 13: Token <ADDOP> Lexeme + found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : term 
+Line# 13: Token <CONST_INT> Lexeme 3 found
+factor	: CONST_INT   
+unary_expression : factor 
+term :	unary_expression 
+Line# 13: Token <SEMICOLON> Lexeme ; found
+simple_expression : simple_expression ADDOP term  
+rel_expression	: simple_expression 
+logic_expression : rel_expression 	 
+expression 	: variable ASSIGNOP logic_expression 		 
+expression_statement : expression SEMICOLON 		 
+statement : expression_statement  
+statements : statements statement  
+Error at line no 14 : syntax error
+Line# 14: warning, 2 of tabs needed but got 0 tabs.
+Line# 14: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 16: warning, 2 of tabs needed but got 0 tabs.
+Line# 16: Token <ID> Lexeme a found
+Line# 16: Token <ASSIGNOP> Lexeme = found
+Line# 16: Token <CONST_INT> Lexeme 0 found
+Line# 16: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 17: warning, 2 of tabs needed but got 0 tabs.
+Line# 17: Token <ID> Lexeme b found
+Line# 17: Token <ASSIGNOP> Lexeme = found
+variable : ID 	 
+Line# 17: Token <ID> Lexeme a found
+Line# 17: Token <SEMICOLON> Lexeme ; found
+variable : ID 	 
+factor	: variable 
+unary_expression : factor 
+term :	unary_expression 
+simple_expression : term 
+rel_expression	: simple_expression 
+logic_expression : rel_expression 	 
+expression 	: variable ASSIGNOP logic_expression 		 
+expression_statement : expression SEMICOLON 		 
+statement : expression_statement  
+statements : statements statement  
+Error at line no 18 : syntax error
+Line# 18: warning, 2 of tabs needed but got 0 tabs.
+Line# 18: Token <SEMICOLON> Lexeme ; found
+statement : expression_statement  
+statements : statements statement  
+Line# 19: warning, 1 of tabs needed but got 0 tabs.
+Line# 19: Token <RCURL> Lexeme } found
+compound_statement : LCURL statements RCURL  
+	ScopeTable# 3
+	10--> <a,INT> 
+	11--> <b,INT> 
+	ScopeTable# 1
+	6--> <foo,FUNCTION,INT> 
+func_definition : type_specifier ID LPAREN RPAREN compound_statement
+unit : func_definition  
+program : program unit 
+Line# 20: Token <RCURL> Lexeme } found
+start : program 
+Total Lines: 20
+Total Errors: 0
